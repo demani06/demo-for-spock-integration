@@ -1,6 +1,5 @@
-package com.deepak
+package com.deepak.demoforspockintegration
 
-import com.deepak.demoforspockintegration.DemoForSpockIntegrationApplication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
@@ -14,13 +13,13 @@ import spock.lang.Unroll
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT ,classes = DemoForSpockIntegrationApplication.class)
 //@WebMvcTest
-class HelloSpec extends Specification {
+class HelloIntegrationSpec extends Specification {
 
     @Autowired
     private TestRestTemplate restTemplate
 
     @LocalServerPort
-    private int port;
+    private int port
 
     def setup() {
         println "Setup"
@@ -41,12 +40,12 @@ class HelloSpec extends Specification {
     @Unroll
     def "when I call the Helloworld return double method"() {
 
-        given:
+        given: "Helloworld double end point exists"
 
-        when:
+        when: "When I call the end point"
         ResponseEntity<Double> entity = restTemplate.exchange(createURLWithPort("/double"),HttpMethod.GET, null, Double.class)
 
-        then:
+        then: "I expect the output to be status ok and return double output of 22.0"
         entity.statusCode == HttpStatus.OK
 
         println(entity)
@@ -57,7 +56,7 @@ class HelloSpec extends Specification {
     }
 
     private String createURLWithPort(String uri) {
-        return "http://localhost:" + port + uri;
+        return "http://localhost:" + port + uri
     }
 
 }
